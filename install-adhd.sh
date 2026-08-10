@@ -26,6 +26,24 @@ claude plugin install i-have-adhd@i-have-adhd || say "    (already installed, co
 say "==> Enabling always-on flag at $flag_path"
 mkdir -p "$claude_dir" && touch "$flag_path"
 
+# The SessionStart hook injects the ruleset into main sessions only — subagents
+# spawned via the Task tool start with fresh context and never see it. A
+# user-level CLAUDE.md does propagate to subagents, so it covers that gap.
+say "==> Extending CLAUDE.md to cover subagents"
+src="$(dirname -- "$0")/adhd-claude-md.md"
+memory="$claude_dir/CLAUDE.md"
+marker="ADHD mode — always on"
+if [ ! -f "$src" ]; then
+  say "    skipped: adhd-claude-md.md not found next to this script"
+elif [ ! -f "$memory" ]; then
+  cp "$src" "$memory" && say "    created $memory"
+elif grep -qF "$marker" "$memory" 2>/dev/null; then
+  say "    already present, left unchanged"
+else
+  # Append rather than overwrite: an existing CLAUDE.md holds your own notes.
+  { printf '\n'; cat "$src"; } >> "$memory" && say "    appended to existing $memory"
+fi
+
 say ""
 say "==> Verifying"
 
@@ -64,6 +82,13 @@ if [ -n "$hook" ] && command -v node >/dev/null 2>&1; then
     say "  FAIL hook ran but emitted nothing"
     fail=1
   fi
+fi
+
+# 5. Subagent coverage.
+if [ -f "$memory" ] && grep -qF "$marker" "$memory" 2>/dev/null; then
+  say "  ok   subagent coverage via CLAUDE.md"
+else
+  say "  WARN CLAUDE.md missing the ruleset - subagents will not inherit it"
 fi
 
 say ""
