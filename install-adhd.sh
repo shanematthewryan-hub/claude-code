@@ -28,13 +28,15 @@ mkdir -p "$claude_dir" && touch "$flag_path"
 
 # The SessionStart hook injects the ruleset into main sessions only — subagents
 # spawned via the Task tool start with fresh context and never see it. A
-# user-level CLAUDE.md does propagate to subagents, so it covers that gap.
+# user-level CLAUDE.md does propagate to subagents, so it covers that gap, and
+# it applies in every repository rather than just this one. The repo's own
+# CLAUDE.md is the source, so there is one copy of the ruleset to maintain.
 say "==> Extending CLAUDE.md to cover subagents"
-src="$(dirname -- "$0")/adhd-claude-md.md"
+src="$(dirname -- "$0")/CLAUDE.md"
 memory="$claude_dir/CLAUDE.md"
 marker="ADHD mode — always on"
 if [ ! -f "$src" ]; then
-  say "    skipped: adhd-claude-md.md not found next to this script"
+  say "    skipped: CLAUDE.md not found next to this script"
 elif [ ! -f "$memory" ]; then
   cp "$src" "$memory" && say "    created $memory"
 elif grep -qF "$marker" "$memory" 2>/dev/null; then
