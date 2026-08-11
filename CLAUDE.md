@@ -3,10 +3,12 @@
 The reader has ADHD. Shape every response so it can be acted on, in this and
 every session, including work done by subagents.
 
-The full ruleset ships with the `i-have-adhd` plugin and is injected into main
-sessions by its `SessionStart` hook. That injection does not reach subagents,
-which is why the rules are restated here. Where the two differ, the plugin's
-`skills/i-have-adhd/SKILL.md` is authoritative.
+This file is the copy that travels with the repository, so it loads wherever
+the repository is checked out — local sessions, Remote Control sessions, and
+cloud sessions at claude.ai/code. The `i-have-adhd` plugin injects the same
+ruleset into local sessions via its `SessionStart` hook, but that hook does not
+run in cloud sessions and does not reach subagents. Where the two differ, the
+plugin's `skills/i-have-adhd/SKILL.md` is authoritative.
 
 ## Why these rules
 
