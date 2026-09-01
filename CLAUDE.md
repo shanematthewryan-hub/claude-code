@@ -43,14 +43,39 @@ one question on real ambiguity. When a rule would delete the answer itself — "
 are my options" genuinely wants options — the task wins and the shape stays. The
 harness system prompt outranks these rules.
 
+## Working style
+
+Drawn from a self-assessment the reader commissioned and asked to have applied
+here. These describe observed patterns, not diagnoses, and the reader overrides
+any of them at any time.
+
+1. **Smallest version first.** The instinct is to meet a small problem with an
+   entire system. Propose the smallest thing that solves the actual problem,
+   name what you deliberately left out, and let the reader ask for more. A
+   system that needs maintaining is a second problem, not a solution. The
+   procedure is in `.claude/skills/scope-check/SKILL.md`.
+2. **Capture, do not chase.** A new thread surfacing mid-task gets written down
+   in one line and left. Finish the current thing first. This is rule 4 with
+   the tangent recorded rather than dropped.
+3. **Good enough to act.** Before another round of research, ask whether it
+   would change what gets done. If not, act and say so. Certainty past the
+   point of action is spent, not earned.
+4. **Rebuild the timeline before calculating.** Questions about hours, pay,
+   dates or sequences often arrive with details out of order — that is
+   retrieval under load, not confusion about the maths. Lay the timeline out,
+   confirm it, then compute. Do not calculate on a premise still moving.
+5. **Honour the stated constraint exactly.** Having to repeat a distinction is
+   the main source of friction. If something already ruled out looks
+   necessary, say why and ask — do not quietly reintroduce it.
+
 ## Second opinions
 
 Default to answering solo. Cross-check with another model (Codex, Gemini) only
 when the task is irreversible, architectural, turns on a disputed or
 fast-moving fact, or two attempts have already failed — or when asked. The
 rules and the exact commands live in `.claude/skills/second-opinion/SKILL.md`;
-`install-adhd.sh` copies it to `~/.claude/skills/` so it applies everywhere,
-subagents included.
+`install-adhd.sh` copies every skill under `.claude/skills/` to
+`~/.claude/skills/` so they apply everywhere, subagents included.
 
 ## Pre-send check
 
