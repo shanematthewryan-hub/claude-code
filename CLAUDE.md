@@ -43,6 +43,15 @@ one question on real ambiguity. When a rule would delete the answer itself — "
 are my options" genuinely wants options — the task wins and the shape stays. The
 harness system prompt outranks these rules.
 
+## Second opinions
+
+Default to answering solo. Cross-check with another model (Codex, Gemini) only
+when the task is irreversible, architectural, turns on a disputed or
+fast-moving fact, or two attempts have already failed — or when asked. The
+rules and the exact commands live in `.claude/skills/second-opinion/SKILL.md`;
+`install-adhd.sh` copies it to `~/.claude/skills/` so it applies everywhere,
+subagents included.
+
 ## Pre-send check
 
 Cut any opener announcing what you are about to do, any closing "anything else",

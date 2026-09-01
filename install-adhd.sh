@@ -46,6 +46,19 @@ else
   { printf '\n'; cat "$src"; } >> "$memory" && say "    appended to existing $memory"
 fi
 
+say "==> Installing the second-opinion skill"
+# Skills under ~/.claude/skills are available in every local session and to
+# subagents, so the escalation rules apply wherever work happens — not just in
+# this repository. The repo copy is the source; this is a copy, not a link.
+skill_src="$(dirname -- "$0")/.claude/skills/second-opinion/SKILL.md"
+skill_dst="$claude_dir/skills/second-opinion/SKILL.md"
+if [ ! -f "$skill_src" ]; then
+  say "    skipped: SKILL.md not found next to this script"
+else
+  mkdir -p "$(dirname -- "$skill_dst")" && cp "$skill_src" "$skill_dst" \
+    && say "    installed $skill_dst"
+fi
+
 say ""
 say "==> Verifying"
 
@@ -91,6 +104,13 @@ if [ -f "$memory" ] && grep -qF "$marker" "$memory" 2>/dev/null; then
   say "  ok   subagent coverage via CLAUDE.md"
 else
   say "  WARN CLAUDE.md missing the ruleset - subagents will not inherit it"
+fi
+
+# 6. Second-opinion skill on disk where sessions and subagents will see it.
+if [ -f "$skill_dst" ]; then
+  say "  ok   second-opinion skill installed"
+else
+  say "  WARN second-opinion skill missing at $skill_dst"
 fi
 
 say ""
