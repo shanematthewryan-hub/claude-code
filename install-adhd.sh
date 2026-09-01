@@ -46,6 +46,22 @@ else
   { printf '\n'; cat "$src"; } >> "$memory" && say "    appended to existing $memory"
 fi
 
+say "==> Installing skills"
+# Skills under ~/.claude/skills are available in every local session and to
+# subagents, so these apply wherever work happens — not just in this
+# repository. The repo copies are the source; these are copies, not links, so
+# re-run this script after editing one.
+skills_src="$(dirname -- "$0")/.claude/skills"
+skills_dst="$claude_dir/skills"
+skills_installed=0
+for dir in "$skills_src"/*/; do
+  [ -f "$dir/SKILL.md" ] || continue
+  name=$(basename "$dir")
+  mkdir -p "$skills_dst/$name" && cp "$dir/SKILL.md" "$skills_dst/$name/SKILL.md" \
+    && say "    installed $name" && skills_installed=$((skills_installed + 1))
+done
+[ "$skills_installed" -eq 0 ] && say "    skipped: no skills found under $skills_src"
+
 say ""
 say "==> Verifying"
 
@@ -91,6 +107,13 @@ if [ -f "$memory" ] && grep -qF "$marker" "$memory" 2>/dev/null; then
   say "  ok   subagent coverage via CLAUDE.md"
 else
   say "  WARN CLAUDE.md missing the ruleset - subagents will not inherit it"
+fi
+
+# 6. Skills on disk where sessions and subagents will see them.
+if [ "$skills_installed" -gt 0 ]; then
+  say "  ok   $skills_installed skill(s) installed under $skills_dst"
+else
+  say "  WARN no skills installed - session rules beyond CLAUDE.md will not load"
 fi
 
 say ""
