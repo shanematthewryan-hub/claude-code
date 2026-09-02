@@ -19,26 +19,29 @@ then print to PDF with *A3 · Landscape · Background graphics on · Margins: no
 
 ```bash
 cd design/stakelums-directory
-SCALE=1.28 COLS='[[0,1],[2,3,4,5,6],[7,8,9,10,11],[12,13,14,15,16,17]]' python3 build.py
+SCALE=1.3 COLS='[[0,1],[2,3,4,5,6],[7,8,9,10,11],[12,13,14,15,16,17]]' \
+  COLGAPS='[20,18.4,12.2,4.8]' python3 build.py
 ```
 
-`SCALE` sets the type size and `COLS` assigns cards (by list position) to the four
-columns. After adding rows, drop `SCALE` a notch or move a card to another column
-if the page overflows.
+`SCALE` sets the type size, `COLS` assigns cards (by list position) to the four
+columns, and `COLGAPS` is the extra space added between cards in each column so
+all four columns finish level at the bottom. After adding rows, drop `SCALE` a
+notch and set `COLGAPS` back to `[0,0,0,0]` if the page overflows.
 
 ## How it reads
 
 Designed to be scanned from a few feet away, not read at a desk. Names print at
-roughly 12 pt and extension numbers at roughly 15.5 pt on the A3 sheet.
+roughly 13 pt and extension numbers at roughly 17 pt on the A3 sheet.
 
-Every contact is **one line**: name, then the email as a small grey annotation,
-then the number hard right in the zone colour, so the colour of a number tells
-you which part of the site it rings. Alternating row tints carry the eye across.
+Every contact is **one line**: name, then the number hard right in the zone
+colour, so the colour of a number tells you which part of the site it rings.
+Alternating row tints carry the eye across.
 
-The type is that size because the `@stakelums.ie` domain is stated once in the
-masthead instead of 45 times down the page — that alone is what pays for it. If
-you ever want the full addresses back, delete the `local = ...` lines in
-`row_html()` in `build.py` and drop `SCALE` to about `1.05`.
+Email addresses are not printed. They duplicated the name they sat beside and
+cost roughly a third of the sheet — that space is now type size. Two rows keep
+an annotation because a name cannot give you the information: Web Office, which
+has no phone number at all, and the Dinans Eircode. The addresses are all still
+in `build.py` if they are ever wanted back on the sheet.
 
 Neutral zones (Key Contacts, Group Ring, Goods In, Store Yard) keep their
 slate header but print their numbers near-black — Key Contacts is the most-used

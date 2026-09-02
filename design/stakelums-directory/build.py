@@ -143,15 +143,18 @@ CARDS = [
 e = html.escape
 
 def row_html(name, ext, email, mob):
-    """One line: name, then the email local part as a muted annotation, then
-    the number hard right. The @stakelums.ie domain is stated once on the
-    sheet instead of 45 times, which buys the type size back."""
-    local = ""
-    if email:
-        local = email[:-len("@stakelums.ie")] if email.endswith("@stakelums.ie") else email
+    """One line: name, then the number hard right.
+
+    Email addresses are not printed beside names — they duplicate the name and
+    cost the type size. The grey annotation slot is kept only for information a
+    name cannot give you (an Eircode), and a row with no phone number at all
+    falls back to showing its address in the number slot.
+    """
+    annot = email if (email and "@" not in email) else ""
     who = '<span class="nm">%s</span>' % e(name)
-    if local:
-        who += '<span class="em">%s</span>' % e(local)
+    if annot:
+        who += '<span class="em">%s</span>' % e(annot)
+
     extcls = "ext multi" if ext and "/" in ext else "ext"
     if ext and mob:
         val = '<span class="%s">%s</span><span class="ext mob"><i>M</i>%s</span>' % (extcls, e(ext), e(mob))
@@ -159,6 +162,8 @@ def row_html(name, ext, email, mob):
         val = '<span class="%s">%s</span>' % (extcls, e(ext))
     elif mob:
         val = '<span class="ext mob"><i>M</i>%s</span>' % e(mob)
+    elif email:
+        val = '<span class="ext addr">%s</span>' % e(email)
     else:
         val = ""
     return '<div class="r"><div class="w">%s</div><div class="v">%s</div></div>' % (who, val)
@@ -176,7 +181,11 @@ for i, c in enumerate(CARDS):
 
 COLS = json.loads(os.environ.get("COLS") or "[]")
 if COLS:
-    cards = "".join('<div class="col">%s</div>' % "".join(card_html[i] for i in grp) for grp in COLS)
+    GAPS = json.loads(os.environ.get("COLGAPS") or "[]")
+    cards = "".join(
+        '<div class="col" style="--ge:%.1fpx">%s</div>'
+        % (GAPS[c] if c < len(GAPS) else 0.0, "".join(card_html[i] for i in grp))
+        for c, grp in enumerate(COLS))
 else:
     cards = "".join(card_html)
 
@@ -236,26 +245,28 @@ body{font-family:'Inter',"Helvetica Neue",Arial,sans-serif;color:var(--text);
 .grid{flex:1;display:flex;gap:3mm;align-items:flex-start}
 .grid.flow{display:block;column-count:4;column-gap:3mm;column-fill:balance}
 .col{flex:1;min-width:0}
+.col .card:last-child{margin-bottom:0}
 .card{background:var(--paper);border:.28mm solid var(--line);border-radius:1.6mm;
-  overflow:hidden;margin-bottom:calc(2.5mm*var(--s));break-inside:avoid;page-break-inside:avoid;
+  overflow:hidden;margin-bottom:calc(2.5mm*var(--s) + var(--ge,0px));break-inside:avoid;page-break-inside:avoid;
   box-shadow:0 .3mm .9mm rgba(16,24,40,.05)}
 .card h2{background:var(--c);color:#fff;font-size:calc(7.9pt*var(--s));font-weight:800;letter-spacing:.085em;
   text-transform:uppercase;padding:calc(1.5mm*var(--s)) 2.2mm calc(1.45mm*var(--s))}
 .rows{padding:0}
-.r{display:flex;align-items:baseline;gap:2.2mm;padding:calc(1.05mm*var(--s)) 2.2mm;
+.r{display:flex;align-items:baseline;gap:1.8mm;padding:calc(.88mm*var(--s)) 2.2mm;
    border-top:.2mm solid #F1F3F5}
 .r:first-child{border-top:0}
 .r:nth-child(even){background:#F5F7F9}
 .w{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;
    column-gap:1.8mm;row-gap:.2mm;overflow:hidden}
-.nm{font-size:calc(9.4pt*var(--s));font-weight:600;color:#12171C;line-height:1.2;
+.nm{font-size:calc(10pt*var(--s));font-weight:600;color:#12171C;line-height:1.2;
   letter-spacing:-.008em;white-space:nowrap}
-.em{font-size:calc(6.8pt*var(--s));font-weight:500;color:#8A919A;line-height:1.15;
+.em{font-size:calc(7.2pt*var(--s));font-weight:500;color:#8A919A;line-height:1.15;
   white-space:nowrap;flex:0 0 auto}
-.v{display:flex;align-items:baseline;justify-content:flex-end;gap:1.8mm;flex:none}
-.ext{font-size:calc(12.2pt*var(--s));font-weight:800;color:var(--c);line-height:1.1;letter-spacing:-.022em;white-space:nowrap}
-.ext.multi{font-size:calc(9.9pt*var(--s));letter-spacing:-.015em}
-.ext.mob{font-size:calc(9.4pt*var(--s));font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.v{display:flex;align-items:baseline;justify-content:flex-end;gap:1.4mm;flex:none}
+.ext{font-size:calc(13pt*var(--s));font-weight:800;color:var(--c);line-height:1.1;letter-spacing:-.022em;white-space:nowrap}
+.ext.multi{font-size:calc(9.6pt*var(--s));letter-spacing:-.015em}
+.ext.addr{font-size:calc(8.8pt*var(--s));font-weight:600;color:#4A525B;letter-spacing:0}
+.ext.mob{font-size:calc(9pt*var(--s));font-weight:700;color:var(--ink);letter-spacing:-.01em}
 .ext.mob i{font-style:normal;font-size:calc(6.2pt*var(--s));font-weight:800;letter-spacing:.06em;
   color:#fff;background:var(--muted);border-radius:.7mm;padding:.25mm .8mm;
   margin-right:1.1mm;position:relative;top:-.4mm}
@@ -285,7 +296,7 @@ body{font-family:'Inter',"Helvetica Neue",Arial,sans-serif;color:var(--text);
     <div class="brand"><b>STAKELUMS</b><span>Internal Directory</span></div>
     <div class="meta">
       <div class="big"><em>Main</em>(0504) 21900 &nbsp;&nbsp;<em>Trade</em>800</div>
-      <div class="sub">Updated September 2026 &nbsp;·&nbsp; Dial the extension from any internal handset &nbsp;·&nbsp; <b>All email addresses end&nbsp;@stakelums.ie</b></div>
+      <div class="sub">Updated September 2026 &nbsp;·&nbsp; Dial the extension from any internal handset</div>
     </div>
   </header>
 
