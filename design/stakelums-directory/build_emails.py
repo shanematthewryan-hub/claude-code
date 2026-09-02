@@ -31,19 +31,38 @@ def email_cards():
     """CARDS in A3 order, keeping only rows with a real address.
 
     An address is listed once, at its first appearance, so the sheet stays a
-    list of addresses rather than a transcript of the phone board.
+    list of addresses rather than a transcript of the phone board. Where the
+    board lists the same person twice — Jay Connors has a desk under Beds and a
+    mobile under Main Shop — the numbers are merged onto that one entry rather
+    than one of them being lost.
     """
-    seen, out = set(), []
+    at = {}                       # address -> [card index, row index]
+    out = []
     for card in CARDS:
         title, tone, rows = card[0], card[1], card[2]
         keep = []
-        for name, _ext, addr, _mob in rows:
-            if not addr or "@" not in addr or addr in seen:
+        for name, ext, addr, mob in rows:
+            if not addr or "@" not in addr:
                 continue
-            seen.add(addr)
-            keep.append((clean(name), addr))
+            if addr in at:
+                ci, ri = at[addr]
+                pname, pext, paddr, pmob = out[ci][2][ri]
+                out[ci][2][ri] = (pname, pext or ext, paddr, pmob or mob)
+                continue
+            at[addr] = (len(out), len(keep))
+            keep.append((clean(name), ext, addr, mob))
         if keep:
             out.append((title, tone, keep))
+    return out
+
+
+def value_html(ext, mob):
+    """The number, right of the name — same colour rule as the A3 board."""
+    out = ""
+    if ext:
+        out += '<span class="ext%s">%s</span>' % (" multi" if "/" in ext else "", e(ext))
+    if mob:
+        out += '<span class="ext mob"><i>M</i>%s</span>' % e(mob)
     return out
 
 
@@ -53,9 +72,10 @@ TOTAL = sum(len(c[2]) for c in CARDS_E)
 card_html = []
 for i, (title, tone, rows) in enumerate(CARDS_E):
     body = "".join(
-        '<div class="r"><span class="nm">%s</span><span class="ml">%s</span></div>'
-        % (e(name), e(addr))
-        for name, addr in rows
+        '<div class="r"><div class="top"><span class="nm">%s</span>'
+        '<span class="v">%s</span></div><span class="ml">%s</span></div>'
+        % (e(name), value_html(ext, mob), e(addr))
+        for name, ext, addr, mob in rows
     )
     card_html.append(
         '<section class="card t-%s" data-i="%d"><h2>%s</h2><div class="rows">%s</div></section>'
@@ -120,18 +140,28 @@ body{font-family:'Inter',"Helvetica Neue",Arial,sans-serif;color:var(--text);
 /* ---------- one contact ---------- */
 .r{padding:calc(1mm*var(--s)) 2.2mm;border-top:.2mm solid #F1F3F5;
    display:flex;flex-direction:column;gap:.15mm}
+.top{display:flex;align-items:baseline;justify-content:space-between;gap:2mm}
 .r:first-child{border-top:0}
 .r:nth-child(even){background:#F5F7F9}
 .nm{font-size:calc(8.4pt*var(--s));font-weight:700;color:#12171C;
-  line-height:1.15;letter-spacing:-.008em}
-/* the address is the payload here, so it is set to be read, not skimmed past */
-.ml{font-size:calc(8pt*var(--s));font-weight:500;color:var(--c);
+  line-height:1.15;letter-spacing:-.008em;min-width:0}
+.v{display:flex;align-items:baseline;gap:1.4mm;flex:none;white-space:nowrap}
+.ext{font-size:calc(9.4pt*var(--s));font-weight:800;color:var(--c);
+  line-height:1.1;letter-spacing:-.02em}
+.ext.multi{font-size:calc(7.6pt*var(--s));letter-spacing:-.012em}
+.ext.mob{font-size:calc(7.4pt*var(--s));font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.ext.mob i{font-style:normal;font-size:calc(5.2pt*var(--s));font-weight:800;letter-spacing:.06em;
+  color:#fff;background:var(--muted);border-radius:.7mm;padding:.25mm .7mm;
+  margin-right:.9mm;position:relative;top:-.4mm}
+/* the address is set to be transcribed character by character, so it takes the
+   high-contrast neutral and lets the number keep the zone colour, as on the A3 */
+.ml{font-size:calc(8pt*var(--s));font-weight:500;color:#414A54;
   line-height:1.2;letter-spacing:-.004em;word-break:break-all}
 
 /* ---------- tones ---------- */
 .t-red{--c:var(--red)} .t-orange{--c:var(--orange)} .t-blue{--c:var(--blue)}
 .t-green{--c:var(--green)} .t-slate{--c:var(--slate)} .t-dark{--c:var(--dark)}
-.t-slate .ml,.t-dark .ml{color:#3D4650}
+.t-slate .ext,.t-dark .ext{color:#12171C}
 
 /* ---------- foot ---------- */
 .foot{display:flex;justify-content:space-between;align-items:baseline;gap:4mm;
@@ -161,7 +191,7 @@ body{font-family:'Inter',"Helvetica Neue",Arial,sans-serif;color:var(--text);
   <main class="grid%(flowcls)s">%(cards)s</main>
 
   <footer class="foot">
-    <span>Companion sheet &nbsp;·&nbsp; phone extensions are on the <b>A3 internal directory</b></span>
+    <span>Companion sheet &nbsp;·&nbsp; every counter, till and desk number is on the <b>A3 internal directory</b></span>
     <span>Trade 800 &nbsp;·&nbsp; Retail 401 &nbsp;·&nbsp; Deliveries 517</span>
   </footer>
 

@@ -23,8 +23,8 @@ cd design/stakelums-directory
 SCALE=1.3 COLS='[[0,1],[2,3,4,5,6],[7,8,9,10,11],[12,13,14,15,16,17]]' \
   COLGAPS='[20,18.4,12.2,4.8]' python3 build.py
 
-SCALE=1.14 COLS='[[0,1,2,3],[4,5,6,7,8,9,10,11,12]]' \
-  COLGAPS='[1.0,12.3]' python3 build_emails.py
+SCALE=1.1 COLS='[[0,1,2,3],[4,5,6,7,8,9,10,11,12]]' \
+  COLGAPS='[6.8,15.0]' python3 build_emails.py
 ```
 
 `SCALE` sets the type size, `COLS` assigns cards (by list position) to the four
@@ -54,13 +54,19 @@ card on the sheet, so it is also the highest-contrast one.
 ## The email sheet
 
 Same card structure as the A3, two columns on A4 portrait. Each entry is the
-name over the full address, and the address prints in its unit's colour, the way
-extension numbers do on the board. An address appears once, at its first
-position in A3 order, so the sheet is a list rather than a transcript — Breda
-Stakelum is filed under Unit 5 Admin, not repeated under Homeware. "— Desk" and
-"— Mobile" are dropped from names here; they are phone concepts.
+name and its extension on the first line, the full address underneath. The
+number keeps the unit's colour, exactly as on the board; the address takes a
+high-contrast neutral because it has to be transcribed character by character.
 
-37 addresses. The footer points back to the A3 for extensions.
+An address appears once, at its first position in A3 order, so the sheet is a
+list rather than a transcript — Breda Stakelum is filed under Unit 5 Admin, not
+repeated under Homeware. Where the board splits one person across two cards, the
+numbers merge onto the single entry: Jay Connors carries both his desk 409 and
+his mobile. "— Desk" and "— Mobile" are dropped from names here; they are phone
+concepts and the numbers now say it themselves.
+
+37 addresses. The A3 remains the complete phone board — it carries the counter,
+till and desk numbers that have no address attached.
 
 ## Printing
 
