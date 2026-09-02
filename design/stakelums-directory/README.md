@@ -19,7 +19,7 @@ then print to PDF with *A3 · Landscape · Background graphics on · Margins: no
 
 ```bash
 cd design/stakelums-directory
-SCALE=1.1 COLS='[[0,1],[2,3,4,5,6],[7,8,9,10,11],[12,13,14,15,16,17]]' python3 build.py
+SCALE=1.28 COLS='[[0,1],[2,3,4,5,6],[7,8,9,10,11],[12,13,14,15,16,17]]' python3 build.py
 ```
 
 `SCALE` sets the type size and `COLS` assigns cards (by list position) to the four
@@ -28,16 +28,28 @@ if the page overflows.
 
 ## How it reads
 
-Designed to be scanned, not read. Extension numbers are the largest thing on
-the sheet after the masthead, set in the zone colour so the number itself tells
-you which part of the site it rings. Names sit at near-black; email addresses
-drop back to grey as a subline so they never compete with the number you are
-looking for. Alternating row tints carry the eye from name to number, and the
-twelve most-dialled numbers are lifted out into the strip along the top.
+Designed to be scanned from a few feet away, not read at a desk. Names print at
+roughly 12 pt and extension numbers at roughly 15.5 pt on the A3 sheet.
+
+Every contact is **one line**: name, then the email as a small grey annotation,
+then the number hard right in the zone colour, so the colour of a number tells
+you which part of the site it rings. Alternating row tints carry the eye across.
+
+The type is that size because the `@stakelums.ie` domain is stated once in the
+masthead instead of 45 times down the page — that alone is what pays for it. If
+you ever want the full addresses back, delete the `local = ...` lines in
+`row_html()` in `build.py` and drop `SCALE` to about `1.05`.
 
 Neutral zones (Key Contacts, Group Ring, Goods In, Store Yard) keep their
 slate header but print their numbers near-black — Key Contacts is the most-used
 card on the sheet, so it is also the highest-contrast one.
+
+## Printing
+
+A3, landscape, **100% scale**, background graphics on. The sheet uses 6 mm
+margins to win space for the type. If your printer cannot reach that close to
+the edge, choose *Fit to printable area* — it scales by about 3%, which is not
+noticeable.
 
 ## Colours
 
