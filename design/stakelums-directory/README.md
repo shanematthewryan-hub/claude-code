@@ -15,12 +15,16 @@ Single-sheet **A3 landscape (420 × 297 mm)** wall directory, rebuilt from
 **Small change (a number, a name):** open the `.html`, find the text, edit, save,
 then print to PDF with *A3 · Landscape · Background graphics on · Margins: none*.
 
-**Adding or removing people:** edit the `CARDS` list in `build.py`, then:
+**Adding or removing people:** edit the `CARDS` list in `directory_data.py`, then
+rebuild both sheets:
 
 ```bash
 cd design/stakelums-directory
 SCALE=1.3 COLS='[[0,1],[2,3,4,5,6],[7,8,9,10,11],[12,13,14,15,16,17]]' \
   COLGAPS='[20,18.4,12.2,4.8]' python3 build.py
+
+SCALE=1.14 COLS='[[0,1,2,3],[4,5,6,7,8,9,10,11,12]]' \
+  COLGAPS='[1.0,12.3]' python3 build_emails.py
 ```
 
 `SCALE` sets the type size, `COLS` assigns cards (by list position) to the four
@@ -47,9 +51,21 @@ Neutral zones (Key Contacts, Group Ring, Goods In, Store Yard) keep their
 slate header but print their numbers near-black — Key Contacts is the most-used
 card on the sheet, so it is also the highest-contrast one.
 
+## The email sheet
+
+Same card structure as the A3, two columns on A4 portrait. Each entry is the
+name over the full address, and the address prints in its unit's colour, the way
+extension numbers do on the board. An address appears once, at its first
+position in A3 order, so the sheet is a list rather than a transcript — Breda
+Stakelum is filed under Unit 5 Admin, not repeated under Homeware. "— Desk" and
+"— Mobile" are dropped from names here; they are phone concepts.
+
+37 addresses. The footer points back to the A3 for extensions.
+
 ## Printing
 
-A3, landscape, **100% scale**, background graphics on. The sheet uses 6 mm
+A3, landscape, **100% scale**, background graphics on. The A4 email sheet prints
+portrait at 100%, same settings. The sheet uses 6 mm
 margins to win space for the type. If your printer cannot reach that close to
 the edge, choose *Fit to printable area* — it scales by about 3%, which is not
 noticeable.
