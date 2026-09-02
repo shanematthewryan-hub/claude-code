@@ -1,0 +1,301 @@
+# -*- coding: utf-8 -*-
+import os, html, io
+
+FONT = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'inter-latin.css')).read()
+
+# ---------------------------------------------------------------- data
+# row = (name, ext, email, mobile)
+QUICK = [
+    ("Builders",         "507",  "red"),
+    ("Trade Electrical", "503",  "red"),
+    ("Plumbing",         "505",  "red"),
+    ("Flooring",         "510",  "red"),
+    ("Paint",            "1200", "red"),
+    ("Beds",             "409",  "red"),
+    ("Bathrooms",        "411",  "red"),
+    ("Stoves",           "413",  "red"),
+    ("Expert",           "900",  "orange"),
+    ("Tool Hire",        "1100", "blue"),
+    ("Josie Hayes",      "518",  "slate"),
+    ("Niamh Irwin",      "515",  "slate"),
+]
+
+CARDS = [
+ ("KEY CONTACTS", "slate", [
+    ("Trade Reception",     "501", None, None),
+    ("Trade (All Phones)",  "800", None, None),
+    ("Retail Reception",    "401", None, None),
+    ("Deliveries Desk",     "517", None, None),
+    ("Niamh Irwin",         "515", None, None),
+    ("Josie Hayes A/C In",  "518", None, None),
+    ("Beds Department",     "409", None, None),
+    ("Paint",               "407 / 408", None, None),
+ ]),
+ ("UNIT 5 — ADMIN", "red", [
+    ("Pat Stakelum",                    "517", "pat@stakelums.ie", None),
+    ("John Stakelum",                   "516", "john@stakelums.ie", None),
+    ("Breda Stakelum",                  "307", "breda@stakelums.ie", None),
+    ("Eamonn Nolan",                    None,  "eamonn@stakelums.ie", "087 661 1563"),
+    ("Niamh Irwin",                     "515", "niamh@stakelums.ie", None),
+    ("Joe Connolly — Desk",             "304", "joe@stakelums.ie", None),
+    ("Joe Connolly — Mobile",           None,  None, "086 823 1699"),
+    ("Nicola McLoughlin — Payroll",     "602", "santina@stakelums.ie", None),
+    ("Triona O’Dwyer — HR / Accounts",  "601", "trina@stakelums.ie", None),
+    ("Marie Loughnane — Accounts Out",  "603", "marie.loughnane@stakelums.ie", None),
+    ("Mary Fitzgibbon — Accounts Out",  "604", "mary.fitzgibbon@stakelums.ie", None),
+    ("Josie Hayes — Accounts In",       "518", "josie@stakelums.ie", None),
+    ("Jess O’Malley",                   "610", "jessica@stakelums.ie", None),
+    ("Robert Harris — Marketing",       "606", "marketing@stakelums.ie", None),
+    ("Cash Office",                     "406", None, None),
+    ("Homewares Office",                "414", None, None),
+ ]),
+ ("UNIT 5 — TRADE DEPARTMENT", "red", [
+    ("Trade Reception",             "501", "info@stakelums.ie", None),
+    ("Trade Reception 2",           "502", None, None),
+    ("Trade (All Phones)",          "800", None, None),
+    ("Trade Counter 1 — Electrical","503 / 504", "electrical@stakelums.ie", None),
+    ("Trade Counter 2 — Plumbing",  "505 / 506", "homeheat@stakelums.ie", None),
+    ("Trade Counter 3 — Builders",  "507 / 508 / 509", None, None),
+    ("James Kennedy",               "513", "james@stakelums.ie", None),
+ ]),
+ ("UNIT 5 — TRADE SALES", "red", [
+    ("Podge Kiely", "512", "salesoffice@stakelums.ie", None),
+    ("John Tynan",  "514", "johntynan@stakelums.ie", None),
+ ]),
+ ("UNIT 5 — WEB SALES", "red", [
+    ("Web Office",                   None,  "websales@stakelums.ie", None),
+    ("Brid Skelly",                  "607", "brid@stakelums.ie", None),
+    ("Caroline Shanahan — Accounts", "605", "caroline@stakelums.ie", None),
+ ]),
+ ("UNIT 5 — DOORS & FLOORS", "red", [
+    ("David Nessbert", "510", "doorsandfloors@stakelums.ie", None),
+ ]),
+ ("GROUP RING — ALL PHONES", "slate", [
+    ("Trade — every trade phone",      "800",  None, None),
+    ("Expert — every Expert phone",    "900",  None, None),
+    ("Hire — every Unit 2 phone",      "1100", None, None),
+    ("Paint — both paint counters",    "1200", None, None),
+    ("Showrooms — bathrooms & stoves", "1300", None, None),
+ ], "Dial from any internal handset. Group numbers ring every phone in that department. M marks a mobile."),
+ ("UNIT 4 — MAIN SHOP", "red", [
+    ("Customer Service / Checkout 01", "401", "retail@stakelums.ie", None),
+    ("Customer Service 02",            "402", None, None),
+    ("Retail Checkout Till 03",        "403", None, None),
+    ("Retail Checkout Till 04",        "404", None, None),
+    ("Retail Checkout Till 05",        "405", None, None),
+    ("Jay Connors — Mobile",           None,  "jay.connors@stakelums.ie", "087 950 6311"),
+    ("Lyndsey Dunphy — Mobile",        None,  "lyndsey@stakelums.ie", "087 213 9533"),
+    ("Breda Stakelum — Homeware",      "307", "breda@stakelums.ie", None),
+    ("Simon Pink — Desk",              "414", None, None),
+ ]),
+ ("UNIT 4 — BEDS / FURNITURE", "red", [
+    ("Jay Connors — Desk",   "409", "jay.connors@stakelums.ie", None),
+    ("Jay Connors — Mobile", None,  None, "087 950 6311"),
+ ]),
+ ("UNIT 4 — PAINT", "red", [
+    ("Paint Counter 1",      "407", "paint@stakelums.ie", None),
+    ("Paint Counter 2",      "408", None, None),
+    ("Paint Counter — Direct","0504 29813", None, None),
+    ("Paint (All Phones)",   "1200", None, None),
+ ]),
+ ("UNIT 4 — BATHROOMS", "red", [
+    ("Bathrooms Desk 1",    "411", "showrooms@stakelums.ie", None),
+    ("Bathrooms Desk 2",    "412", None, None),
+    ("Anita O’Dowd — Desk", "410", "anita.kennedy@stakelums.ie", None),
+ ]),
+ ("UNIT 4 — STOVES", "red", [
+    ("Stoves Desk",           "413",  "stovecentre@stakelums.ie", None),
+    ("Showrooms (All Phones)","1300", None, None),
+ ]),
+ ("UNIT 4 — GARDEN CENTRE", "green", [
+    ("Garden Centre", "704", None, None),
+ ]),
+ ("UNIT 3 — EXPERT", "orange", [
+    ("Expert Counter 1",    "301", "expert@stakelums.ie", None),
+    ("Expert Counter 2",    "302", None, None),
+    ("Expert Counter 3",    "303", None, None),
+    ("Expert Floor",        "306", None, None),
+    ("Expert (All Phones)", "900", None, None),
+    ("Cordless",            "710", None, None),
+    ("Colm Fitzgibbon",     "308", "colm@stakelums.ie", None),
+ ]),
+ ("UNIT 2 — HIRE", "blue", [
+    ("Hire (All Phones)", "1100", None, None),
+    ("Counter 1",         "201",  "unit2@stakelums.ie", None),
+    ("Counter 2",         "202",  None, None),
+    ("Tom Stakelum — Desk","204", "tom@stakelums.ie", None),
+ ]),
+ ("UNIT 1 — GOODS IN", "dark", [
+    ("Rocky (Martin)", "519", "goodsinwards@stakelums.ie", None),
+    ("Kevin Trayer",   None,  None, "087 275 8167"),
+ ]),
+ ("STORE YARD — DELIVERIES", "dark", [
+    ("Deliveries Desk", "517", "deliveries@stakelums.ie", None),
+    ("Pat Stakelum",    "517", "pat@stakelums.ie", None),
+    ("Paddy Stakelum",  None,  "paddy@stakelums.ie", "086 214 7908"),
+ ]),
+ ("STORE YARD — DINANS", "dark", [
+    ("Stakelums Office Supplies", "0504 21888", "Eircode E41 H9C7", None),
+    ("The Runner Bean — Louise",  None, None, "087 853 6339"),
+ ]),
+]
+
+e = html.escape
+
+def row_html(name, ext, email, mob):
+    who = '<span class="nm">%s</span>' % e(name)
+    if email:
+        who += '<span class="em">%s</span>' % e(email)
+    val = ''
+    if ext:
+        val = '<span class="ext">%s</span>' % e(ext)
+    elif mob:
+        val = '<span class="ext mob"><i>M</i>%s</span>' % e(mob)
+    if ext and mob:
+        val = '<span class="ext">%s</span><span class="ext mob"><i>M</i>%s</span>' % (e(ext), e(mob))
+    return '<div class="r"><div class="w">%s</div><div class="v">%s</div></div>' % (who, val)
+
+import json
+card_html = []
+for i, c in enumerate(CARDS):
+    title, tone, rows = c[0], c[1], c[2]
+    note = c[3] if len(c) > 3 else None
+    body = "".join(row_html(*r) for r in rows)
+    if note:
+        body += '<p class="note">%s</p>' % e(note)
+    card_html.append('<section class="card t-%s" data-i="%d"><h2>%s</h2><div class="rows">%s</div></section>'
+                     % (tone, i, e(title), body))
+
+COLS = json.loads(os.environ.get("COLS") or "[]")
+if COLS:
+    cards = "".join('<div class="col">%s</div>' % "".join(card_html[i] for i in grp) for grp in COLS)
+else:
+    cards = "".join(card_html)
+
+tiles = "".join(
+    '<div class="tile t-%s"><span class="tl">%s</span><span class="tn">%s</span></div>' % (tone, e(lab), e(num))
+    for lab, num, tone in QUICK)
+
+HTML = """<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Stakelums Internal Directory — A3</title>
+<style>
+%(font)s
+:root{
+  --red:#C91C23; --orange:#FF7900; --blue:#2055A6; --green:#2C8A3E;
+  --slate:#59636E; --dark:#34454D; --ink:#1B2229; --text:#20272F;
+  --muted:#7A828C; --line:#E4E7EB; --paper:#FFFFFF; --bg:#EEF0F3;
+  --s:%(scale)s;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#8A8F96}
+body{font-family:'Inter',"Helvetica Neue",Arial,sans-serif;color:var(--text);
+  -webkit-font-smoothing:antialiased;font-feature-settings:"tnum" 1,"cv05" 1;}
+
+.page{
+  width:420mm;height:297mm;background:var(--bg);
+  padding:9mm 9mm 5mm;display:flex;flex-direction:column;
+  margin:0 auto;overflow:hidden;
+}
+
+/* ---------- masthead ---------- */
+.mast{display:flex;align-items:flex-end;justify-content:space-between;
+  border-bottom:1.1mm solid var(--red);padding-bottom:2.6mm;margin-bottom:3.6mm}
+.brand{display:flex;align-items:baseline;gap:5mm}
+.brand b{font-size:26pt;font-weight:800;letter-spacing:-.018em;color:var(--red);line-height:.95}
+.brand span{font-size:16pt;font-weight:600;letter-spacing:.055em;color:var(--ink);text-transform:uppercase}
+.meta{text-align:right;line-height:1.45}
+.meta .big{font-size:12.5pt;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.meta .big em{font-style:normal;font-weight:600;color:var(--muted);font-size:8pt;
+  letter-spacing:.09em;text-transform:uppercase;margin-right:2mm}
+.meta .sub{font-size:7.4pt;color:var(--muted);font-weight:500}
+
+/* ---------- quick strip ---------- */
+.quick{background:var(--paper);border:.28mm solid var(--line);border-radius:1.6mm;
+  padding:2.4mm 2.6mm 2.8mm;margin-bottom:3.6mm;box-shadow:0 .3mm .9mm rgba(16,24,40,.05)}
+.quick h1{font-size:7.4pt;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:2.2mm;display:flex;align-items:center;gap:2.5mm}
+.quick h1:after{content:"";flex:1;height:.25mm;background:var(--line)}
+.tiles{display:grid;grid-template-columns:repeat(12,1fr);gap:2mm}
+.tile{background:#F7F8FA;border:.25mm solid var(--line);border-top:.9mm solid var(--c);
+  border-radius:1.2mm;padding:1.8mm 2mm 1.9mm;display:flex;flex-direction:column;gap:.6mm}
+.tile .tl{font-size:6.2pt;font-weight:700;letter-spacing:.075em;text-transform:uppercase;color:var(--muted);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile .tn{font-size:15pt;font-weight:800;letter-spacing:-.02em;color:var(--c);line-height:1}
+
+/* ---------- columns ---------- */
+.grid{flex:1;display:flex;gap:4mm;align-items:flex-start}
+.grid.flow{display:block;column-count:4;column-gap:4mm;column-fill:balance}
+.col{flex:1;min-width:0}
+.card{background:var(--paper);border:.28mm solid var(--line);border-radius:1.6mm;
+  overflow:hidden;margin-bottom:calc(3.4mm*var(--s));break-inside:avoid;page-break-inside:avoid;
+  box-shadow:0 .3mm .9mm rgba(16,24,40,.05)}
+.card h2{background:var(--c);color:#fff;font-size:calc(7.3pt*var(--s));font-weight:800;letter-spacing:.09em;
+  text-transform:uppercase;padding:calc(1.9mm*var(--s)) 2.6mm calc(1.8mm*var(--s))}
+.rows{padding:.4mm 0 .6mm}
+.r{display:flex;align-items:baseline;gap:2mm;padding:calc(1.15mm*var(--s)) 2.6mm;
+   border-top:.22mm solid #EFF1F4}
+.r:first-child{border-top:0}
+.r:nth-child(even){background:#FAFBFC}
+.w{flex:1;min-width:0;display:flex;flex-direction:column;gap:.15mm}
+.nm{font-size:calc(7.5pt*var(--s));font-weight:600;color:var(--text);line-height:1.2;letter-spacing:-.004em}
+.em{font-size:calc(6.15pt*var(--s));font-weight:500;color:var(--muted);line-height:1.2;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v{display:flex;flex-direction:column;align-items:flex-end;gap:.3mm;flex:none}
+.ext{font-size:calc(8.6pt*var(--s));font-weight:800;color:var(--c);line-height:1.15;letter-spacing:-.015em;white-space:nowrap}
+.ext.mob{font-size:calc(7.2pt*var(--s));font-weight:700;color:var(--ink)}
+.ext.mob i{font-style:normal;font-size:calc(5.4pt*var(--s));font-weight:800;letter-spacing:.06em;
+  color:#fff;background:var(--muted);border-radius:.7mm;padding:.25mm .8mm;
+  margin-right:1.1mm;position:relative;top:-.4mm}
+
+.note{font-size:calc(6.2pt*var(--s));line-height:1.45;color:var(--muted);font-weight:500;
+  padding:calc(1.6mm*var(--s)) 2.6mm calc(1.2mm*var(--s));border-top:.22mm solid #EFF1F4;background:#FAFBFC}
+
+/* ---------- tones ---------- */
+.t-red{--c:var(--red)} .t-orange{--c:var(--orange)} .t-blue{--c:var(--blue)}
+.t-green{--c:var(--green)} .t-slate{--c:var(--slate)} .t-dark{--c:var(--dark)}
+
+/* ---------- foot ---------- */
+.foot{display:flex;justify-content:space-between;align-items:center;
+  padding-top:2.2mm;margin-top:.6mm;border-top:.28mm solid #DCE0E5;
+  font-size:6.4pt;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.foot b{color:var(--red);font-weight:800}
+
+@page{size:A3 landscape;margin:0}
+@media print{
+  html,body{background:#fff}
+  .page{margin:0;box-shadow:none}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@media screen{ .page{box-shadow:0 4mm 12mm rgba(0,0,0,.28);margin:6mm auto} }
+</style></head>
+<body>
+<div class="page">
+
+  <header class="mast">
+    <div class="brand"><b>STAKELUMS</b><span>Internal Directory</span></div>
+    <div class="meta">
+      <div class="big"><em>Main</em>(0504) 21900 &nbsp;&nbsp;<em>Trade</em>800</div>
+      <div class="sub">Updated September 2026 &nbsp;·&nbsp; Dial the extension from any internal handset</div>
+    </div>
+  </header>
+
+  <div class="quick">
+    <h1>Quick transfers</h1>
+    <div class="tiles">%(tiles)s</div>
+  </div>
+
+  <main class="grid%(flowcls)s">%(cards)s</main>
+
+  <footer class="foot">
+    <span><b>Stakelums Hardware</b> &nbsp;·&nbsp; Thurles, Co. Tipperary</span>
+    <span>Trade all phones 800 &nbsp;·&nbsp; Retail reception 401 &nbsp;·&nbsp; Deliveries 517</span>
+  </footer>
+
+</div>
+</body></html>
+""" % {"font": FONT, "tiles": tiles, "scale": os.environ.get("SCALE","1"), "cards": cards, "flowcls": ("" if COLS else " flow")}
+
+out = os.environ.get("OUT", "/home/user/claude-code/design/stakelums-directory/stakelums-internal-directory-a3.html")
+open(out, "w").write(HTML)
+print(out, os.path.getsize(out))
