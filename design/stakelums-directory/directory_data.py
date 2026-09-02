@@ -45,7 +45,7 @@ CARDS = [
     ("Niamh Irwin",                     "515", "niamh@stakelums.ie", None),
     ("Joe Connolly — Desk",             "304", "joe@stakelums.ie", None),
     ("Joe Connolly — Mobile",           None,  None, "086 823 1699"),
-    ("Nicola McLoughlin — Payroll",     "602", "santina@stakelums.ie", None),
+    ("Nicola McLoughlin — Payroll",     "602", "nicola@stakelums.ie", None),
     ("Triona O’Dwyer — HR / Accounts",  "601", "trina@stakelums.ie", None),
     ("Marie Loughnane — Accounts Out",  "603", "marie.loughnane@stakelums.ie", None),
     ("Mary Fitzgibbon — Accounts Out",  "604", "mary.fitzgibbon@stakelums.ie", None),

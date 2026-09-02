@@ -94,8 +94,10 @@ tells you which part of the site it rings.
 
 ## Notes on the data
 
-Two oddities carried over from the source workbook, unchanged:
+Both addresses that did not match their name have been checked against the
+office and settled:
 
-1. Anita O'Dowd (Unit 4 — Bathrooms, ext 410) is listed with the address
-   `anita.kennedy@stakelums.ie`.
-2. Nicola McLoughlin (Payroll, ext 602) is listed with `santina@stakelums.ie`.
+1. Nicola McLoughlin (Payroll, ext 602) is `nicola@stakelums.ie`. The source
+   workbook had `santina@stakelums.ie`; corrected here.
+2. Anita O'Dowd (Unit 4 — Bathrooms, ext 410) is `anita.kennedy@stakelums.ie`.
+   Confirmed correct, left as it stands.
