@@ -7,7 +7,7 @@
   --red:#C91C23; --orange:#FF7900; --blue:#2055A6; --green:#2C8A3E;
   --slate:#59636E; --dark:#34454D; --ink:#1B2229; --text:#20272F;
   --muted:#7A828C; --line:#E4E7EB; --paper:#FFFFFF; --bg:#EEF0F3;
-  --s:1.12;
+  --s:1.1;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:#8A8F96}
@@ -22,10 +22,10 @@ body{font-family:'Inter',"Helvetica Neue",Arial,sans-serif;color:var(--text);
 
 /* ---------- masthead ---------- */
 .mast{display:flex;align-items:flex-end;justify-content:space-between;
-  border-bottom:1.1mm solid var(--red);padding-bottom:2.6mm;margin-bottom:3.6mm}
+  border-bottom:1.1mm solid var(--red);padding-bottom:2.2mm;margin-bottom:3.2mm}
 .brand{display:flex;align-items:baseline;gap:5mm}
-.brand b{font-size:26pt;font-weight:800;letter-spacing:-.018em;color:var(--red);line-height:.95}
-.brand span{font-size:16pt;font-weight:600;letter-spacing:.055em;color:var(--ink);text-transform:uppercase}
+.brand b{font-size:24pt;font-weight:800;letter-spacing:-.018em;color:var(--red);line-height:.95}
+.brand span{font-size:15pt;font-weight:600;letter-spacing:.055em;color:var(--ink);text-transform:uppercase}
 .meta{text-align:right;line-height:1.45}
 .meta .big{font-size:12.5pt;font-weight:700;color:var(--ink);letter-spacing:-.01em}
 .meta .big em{font-style:normal;font-weight:600;color:var(--muted);font-size:8pt;
@@ -34,16 +34,16 @@ body{font-family:'Inter',"Helvetica Neue",Arial,sans-serif;color:var(--text);
 
 /* ---------- quick strip ---------- */
 .quick{background:var(--paper);border:.28mm solid var(--line);border-radius:1.6mm;
-  padding:2.4mm 2.6mm 2.8mm;margin-bottom:3.6mm;box-shadow:0 .3mm .9mm rgba(16,24,40,.05)}
+  padding:2.2mm 2.6mm 2.4mm;margin-bottom:3.2mm;box-shadow:0 .3mm .9mm rgba(16,24,40,.05)}
 .quick h1{font-size:7.4pt;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:2.2mm;display:flex;align-items:center;gap:2.5mm}
+  color:var(--muted);margin-bottom:1.9mm;display:flex;align-items:center;gap:2.5mm}
 .quick h1:after{content:"";flex:1;height:.25mm;background:var(--line)}
 .tiles{display:grid;grid-template-columns:repeat(12,1fr);gap:2mm}
-.tile{background:#F7F8FA;border:.25mm solid var(--line);border-top:.9mm solid var(--c);
-  border-radius:1.2mm;padding:1.8mm 2mm 1.9mm;display:flex;flex-direction:column;gap:.6mm}
-.tile .tl{font-size:6.2pt;font-weight:700;letter-spacing:.075em;text-transform:uppercase;color:var(--muted);
+.tile{background:#F7F8FA;border:.25mm solid var(--line);border-top:1mm solid var(--c);
+  border-radius:1.2mm;padding:1.5mm 2mm 1.6mm;display:flex;flex-direction:column;gap:.3mm}
+.tile .tl{font-size:6.6pt;font-weight:700;letter-spacing:.075em;text-transform:uppercase;color:var(--muted);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tile .tn{font-size:15pt;font-weight:800;letter-spacing:-.02em;color:var(--c);line-height:1}
+.tile .tn{font-size:17pt;font-weight:800;letter-spacing:-.02em;color:var(--c);line-height:1}
 
 /* ---------- columns ---------- */
 .grid{flex:1;display:flex;gap:4mm;align-items:flex-start}
@@ -52,30 +52,33 @@ body{font-family:'Inter',"Helvetica Neue",Arial,sans-serif;color:var(--text);
 .card{background:var(--paper);border:.28mm solid var(--line);border-radius:1.6mm;
   overflow:hidden;margin-bottom:calc(3.4mm*var(--s));break-inside:avoid;page-break-inside:avoid;
   box-shadow:0 .3mm .9mm rgba(16,24,40,.05)}
-.card h2{background:var(--c);color:#fff;font-size:calc(7.3pt*var(--s));font-weight:800;letter-spacing:.09em;
-  text-transform:uppercase;padding:calc(1.9mm*var(--s)) 2.6mm calc(1.8mm*var(--s))}
+.card h2{background:var(--c);color:#fff;font-size:calc(7.9pt*var(--s));font-weight:800;letter-spacing:.085em;
+  text-transform:uppercase;padding:calc(1.85mm*var(--s)) 2.6mm calc(1.75mm*var(--s))}
 .rows{padding:.4mm 0 .6mm}
-.r{display:flex;align-items:baseline;gap:2mm;padding:calc(1.15mm*var(--s)) 2.6mm;
-   border-top:.22mm solid #EFF1F4}
+.r{display:flex;align-items:baseline;gap:2.4mm;padding:calc(1.02mm*var(--s)) 2.6mm;
+   border-top:.2mm solid #F1F3F5}
 .r:first-child{border-top:0}
-.r:nth-child(even){background:#FAFBFC}
+.r:nth-child(even){background:#F5F7F9}
 .w{flex:1;min-width:0;display:flex;flex-direction:column;gap:.15mm}
-.nm{font-size:calc(7.5pt*var(--s));font-weight:600;color:var(--text);line-height:1.2;letter-spacing:-.004em}
-.em{font-size:calc(6.15pt*var(--s));font-weight:500;color:var(--muted);line-height:1.2;
+.nm{font-size:calc(8.1pt*var(--s));font-weight:600;color:#161B21;line-height:1.18;letter-spacing:-.005em}
+.em{font-size:calc(6pt*var(--s));font-weight:500;color:#7C838C;line-height:1.15;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .v{display:flex;flex-direction:column;align-items:flex-end;gap:.3mm;flex:none}
-.ext{font-size:calc(8.6pt*var(--s));font-weight:800;color:var(--c);line-height:1.15;letter-spacing:-.015em;white-space:nowrap}
-.ext.mob{font-size:calc(7.2pt*var(--s));font-weight:700;color:var(--ink)}
-.ext.mob i{font-style:normal;font-size:calc(5.4pt*var(--s));font-weight:800;letter-spacing:.06em;
+.ext{font-size:calc(10.6pt*var(--s));font-weight:800;color:var(--c);line-height:1.1;letter-spacing:-.022em;white-space:nowrap}
+.ext.mob{font-size:calc(8.2pt*var(--s));font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.ext.mob i{font-style:normal;font-size:calc(5.6pt*var(--s));font-weight:800;letter-spacing:.06em;
   color:#fff;background:var(--muted);border-radius:.7mm;padding:.25mm .8mm;
   margin-right:1.1mm;position:relative;top:-.4mm}
 
-.note{font-size:calc(6.2pt*var(--s));line-height:1.45;color:var(--muted);font-weight:500;
+.note{font-size:calc(6.4pt*var(--s));line-height:1.45;color:var(--muted);font-weight:500;
   padding:calc(1.6mm*var(--s)) 2.6mm calc(1.2mm*var(--s));border-top:.22mm solid #EFF1F4;background:#FAFBFC}
 
 /* ---------- tones ---------- */
 .t-red{--c:var(--red)} .t-orange{--c:var(--orange)} .t-blue{--c:var(--blue)}
 .t-green{--c:var(--green)} .t-slate{--c:var(--slate)} .t-dark{--c:var(--dark)}
+/* neutral zones: header keeps its tone, numbers go near-black so the most
+   frequently dialled card is also the highest-contrast one */
+.t-slate .ext,.t-dark .ext{color:#12171C}
 
 /* ---------- foot ---------- */
 .foot{display:flex;justify-content:space-between;align-items:center;

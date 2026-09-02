@@ -19,12 +19,25 @@ then print to PDF with *A3 · Landscape · Background graphics on · Margins: no
 
 ```bash
 cd design/stakelums-directory
-SCALE=1.12 COLS='[[0,1],[2,3,4,5,6],[7,8,9,10,11],[12,13,14,15,16,17]]' python3 build.py
+SCALE=1.1 COLS='[[0,1],[2,3,4,5,6],[7,8,9,10,11],[12,13,14,15,16,17]]' python3 build.py
 ```
 
 `SCALE` sets the type size and `COLS` assigns cards (by list position) to the four
 columns. After adding rows, drop `SCALE` a notch or move a card to another column
 if the page overflows.
+
+## How it reads
+
+Designed to be scanned, not read. Extension numbers are the largest thing on
+the sheet after the masthead, set in the zone colour so the number itself tells
+you which part of the site it rings. Names sit at near-black; email addresses
+drop back to grey as a subline so they never compete with the number you are
+looking for. Alternating row tints carry the eye from name to number, and the
+twelve most-dialled numbers are lifted out into the strip along the top.
+
+Neutral zones (Key Contacts, Group Ring, Goods In, Store Yard) keep their
+slate header but print their numbers near-black — Key Contacts is the most-used
+card on the sheet, so it is also the highest-contrast one.
 
 ## Colours
 
